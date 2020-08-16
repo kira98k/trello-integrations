@@ -4,13 +4,17 @@
   "description": "Trello Integration for Goodreads",
   "main": "index.js",
   "repository": "https://github.com/kira98k/trello-integrations.git",
+  "homepage": "http://kira98k.github.io/trello-integrations",
   "author": "Kira98k",
   "license": "MIT",
   "private": true,
   "scripts": {
-    "build": "parcel build src/html/*.html"
+    "build": "parcel build src/html/*.html",
+    "predeploy": "yarn build",
+    "deploy": "gh-pages -d dist"
   },
   "devDependencies": {
+    "gh-pages": "^3.1.0",
     "parcel-bundler": "^1.12.4"
   }
 }
