@@ -1,15 +1,6 @@
 # Python
 *.pyc 
 __pycache__
-packages
 
 # PyCharm
 .idea
-
-# NodeJs
-node_modules
-dist
-.cache
-
-# AWS Lambda
-*.zip
