@@ -13,3 +13,6 @@ dist
 
 # AWS Lambda
 *.zip
+
+# Environment Files
+.env
