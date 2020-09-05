@@ -59,4 +59,4 @@ module.exports=require("./lib/axios");
 },{"axios":"O4Aa"}],"QvaY":[function(require,module,exports) {
 "use strict";var e=require("./goodreads");(0,e.create_request)().then(console.log);
 },{"./goodreads":"YMps"}]},{},["QvaY"], null)
-//# sourceMappingURL=/js.1e9939eb.js.map
+//# sourceMappingURL=/trello-integrations/js.1e9939eb.js.map
