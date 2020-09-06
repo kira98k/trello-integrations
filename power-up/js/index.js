@@ -1,3 +1,6 @@
-import { create_request, get_access_token } from './goodreads';
+import { authorization_status, show_authorization } from "./trello";
 
-create_request().then(console.log);
+TrelloPowerUp.initialize({
+	"authorization-status": authorization_status,
+	"show-authorization": show_authorization
+});

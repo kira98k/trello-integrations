@@ -8,7 +8,7 @@ def parse_user_id(content):
 def parse_user_books(content):
 	root = etree.fromstring(content)
 	books = []
-	for item in root.xpath('//item'):
+	for item in root.xpath("//item"):
 		book = {
 			"book_id": item.xpath("book_id/text()")[0],
 			"title": item.xpath("title/text()")[0],

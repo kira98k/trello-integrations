@@ -31,7 +31,7 @@ def get_access_token(request_token):
 	return {"access_token": encrypted_access_token}
 
 
-def _get_user_id(access_token):
+def get_user_id(access_token):
 	session = _create_session(access_token)
 	response = session.get(GET_USER_URL)
 	return parser.parse_user_id(response.content)
@@ -39,12 +39,12 @@ def _get_user_id(access_token):
 
 def get_books(access_token):
 	session = _create_session(access_token)
-	user_id = _get_user_id(access_token)
+	user_id = get_user_id(access_token)
 	response = session.get(GET_BOOKS_URL.format(user_id=user_id))
 	return parser.parse_user_books(response.content)
 
 
 def search_books(access_token, query):
 	session = _create_session(access_token)
-	response = session.get(SEARCH_BOOKS_URL, params={'q': query})
+	response = session.get(SEARCH_BOOKS_URL, params={"q": query})
 	return parser.parse_search_books(response.content)

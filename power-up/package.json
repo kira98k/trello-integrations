@@ -7,7 +7,7 @@
 	"author": "Kira98k<kira98k.d.law@gmail.com>",
 	"license": "MIT",
 	"scripts": {
-		"build": "parcel build --public-url=${PUBLIC_URL:-/} index.html",
+		"build": "parcel build --public-url=${PUBLIC_URL:-/} *.html",
 		"predeploy": "PUBLIC_URL=/trello-integrations yarn build",
 		"deploy": "gh-pages -d dist",
 		"test": "echo $PUBLIC_URL"

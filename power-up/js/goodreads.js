@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from "axios";
 
 const BASE_URL = process.env.BASE_URL;
 
@@ -11,7 +11,12 @@ export function create_request() {
 }
 
 export function get_access_token(request_token) {
-	return postData({ "action": "get_access_token", "request_token": request_token });
+	return postData({ "action": "get_access_token", "request_token": request_token })
+		.then(({ access_token }) => access_token);
+}
+
+export function get_user_id(access_token) {
+	return postData({ "action": "get_user_id", "access_token": access_token })
 }
 
 export function get_books(access_token) {
