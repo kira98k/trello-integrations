@@ -4,7 +4,7 @@ window.onload = function () {
 	const authorized = params.get("authorize");
 	if (auth_url !== null) {
 		window.location.replace(auth_url);
-	} else if(window.opener != null) {
+	} else if (window.opener != null) {
 		window.opener.postMessage((authorized === "1"));
 		window.close();
 	}

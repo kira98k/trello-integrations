@@ -1,7 +1,10 @@
-import { create_request, get_access_token } from "./goodreads";
+import { create_request, get_access_token, get_books } from "./goodreads";
 
 export function authorization_status(trello) {
-	console.log("Running authorization status")
+	/*
+	Read access token from trello saved data. Return true if present.
+	 */
+	console.log("Running authorization status.")
 	return trello.get("member", "private", "access_token", -1)
 		.then(access_token => {
 			if (access_token === -1) {
@@ -27,12 +30,8 @@ export function show_authorization(trello) {
 			console.log("Authorization Successful.");
 			trello.get("member", "private", "request_token", -1)
 				.then(request_token => {
-					if (request_token === -1) {
-						console.log("Request Token not found.");
-					} else {
-						console.log(`Request Token Found : ${request_token}`);
-						return get_access_token(request_token);
-					}
+					console.log(`Request Token Found : ${request_token}`);
+					return get_access_token(request_token);
 				})
 				.then(access_token => {
 					return trello.set("member", "private", "access_token", access_token);
@@ -59,4 +58,39 @@ export function show_authorization(trello) {
 			}
 			return { auth_url, request_token };
 		});
+}
+
+function get_books_popup(trello) {
+	return trello.get("member", "private", "access_token", -1)
+		.then(access_token => {
+			if (access_token === -1) {
+				return trello.alert({ message: "User not authorized yet." })
+					.then(() => []);
+			} else {
+				return get_books(access_token);
+			}
+		})
+		.then(books => {
+			let items = [];
+			books.forEach(book => {
+				items.push({
+					text: book.title,
+					callback: (trello) => trello.alert({ message: "You clicked : " + book.title })
+				})
+			})
+			console.log("Received Items : " + JSON.stringify(items));
+			return items;
+		});
+}
+
+export function card_buttons() {
+	return [{
+		text: 'Your Books',
+		callback: (trello) => {
+			return trello.popup({
+				title: "Your Books",
+				items: get_books_popup
+			})
+		}
+	}];
 }
