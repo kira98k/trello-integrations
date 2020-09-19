@@ -1,4 +1,6 @@
-import { create_request, get_access_token } from "../goodreads";
+import { create_request, get_access_token, get_user_id } from "../goodreads";
+
+const Promise = window.TrelloPowerUp.Promise;
 
 export function authorization_status(trello) {
 	/*
@@ -38,7 +40,13 @@ export function show_authorization(trello) {
 					if (authorized === "1") {
 						console.log("Authorized")
 						return get_access_token(request_token)
-							.then(access_token => trello.set("member", "private", "access_token", access_token));
+							.then(access_token => {
+								const save_access_token = trello.set("member", "private", "access_token", access_token)
+								const save_user_id = get_user_id(access_token).then(user_id => {
+									return trello.set("member", "private", "user_id", user_id);
+								});
+								return Promise.all(save_access_token, save_user_id);
+							});
 					}
 				})
 		});

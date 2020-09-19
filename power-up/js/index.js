@@ -1,13 +1,15 @@
 import {
+	attachment_sections,
 	authorization_status,
-	show_authorization,
 	card_buttons,
-	attachment_sections
+	card_detail_badges,
+	show_authorization
 } from "./trello/index";
 
 TrelloPowerUp.initialize({
 	"attachment-sections": attachment_sections,
 	"authorization-status": authorization_status,
-	"show-authorization": show_authorization,
-	"card-buttons": card_buttons
+	"card-buttons": card_buttons,
+	"card-detail-badges": card_detail_badges,
+	"show-authorization": show_authorization
 });

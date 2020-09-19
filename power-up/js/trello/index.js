@@ -1,3 +1,4 @@
 export * from "./authorization";
 export * from "./attachments";
-export * from "./on-disable";
+export * from "./card-buttons";
+export * from "./card-detail-badges";
