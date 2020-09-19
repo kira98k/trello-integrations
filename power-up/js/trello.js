@@ -1,6 +1,7 @@
 import { create_request, get_access_token, get_books } from "./goodreads";
 
 const GRAY_ICON = 'https://cdn.hyperdev.com/us-east-1%3A3d31b21c-01a0-4da2-8827-4bc6e88b7618%2Ficon-gray.svg';
+const GOODREADS_BOOK_URL = "https://www.goodreads.com/book/show/";
 
 export function authorization_status(trello) {
 	/*
@@ -37,7 +38,7 @@ export function show_authorization(trello) {
 			console.log(`Opening Authorization Popup : ${auth_url}`)
 			return trello.authorize(auth_url)
 				.then((authorized) => {
-					if(authorized === "1") {
+					if (authorized === "1") {
 						console.log("Authorized")
 						return get_access_token(request_token)
 							.then(access_token => trello.set("member", "private", "access_token", access_token));
@@ -63,7 +64,8 @@ export function get_books_popup(trello) {
 					text: book.title,
 					callback: (trello) => {
 						console.log(`Saving book "${book.title}" on card titled : ${trello.card}`)
-						trello.set("card", "private", "book", book);
+						trello.set("card", "private", "book", book)
+							.then(() => trello.attach({ name: book.title, url: GOODREADS_BOOK_URL + book.book_id }))
 					}
 				})
 			})
@@ -84,21 +86,25 @@ export function card_buttons() {
 	}];
 }
 
-export function card_back_section(trello) {
-	return trello.get("card", "private", "book", -1)
-		.then(book => {
-			if (book === -1) {
-				return [];
-			}
+export function attachment_sections(trello, options) {
+	const claimed = options.entries.filter((attachment) => {
+		return attachment.url.indexOf("https://www.goodreads.com/book/show/") === 0;
+	});
+	if (claimed && claimed.length === 1) {
+		return trello.get("card", "private", "book", -1).then(book => {
+			const attachment = claimed[0];
 			return [{
-				id: "Book Description",
-				title: "Book Description",
+				id: attachment.name,
+				claimed: claimed,
 				icon: GRAY_ICON,
+				title: `Book Description - ${attachment.name}`,
 				content: {
 					type: "iframe",
 					url: trello.signUrl("./description.html", { description: book.description }),
-					height: 500
+					height: 250
 				}
 			}];
-		})
+		});
+	}
+	return [];
 }
