@@ -8,7 +8,7 @@
 	"license": "MIT",
 	"scripts": {
 		"prebuild": "rm -rf dist",
-		"build": "parcel build --public-url=${PUBLIC_URL:-/} *.html",
+		"build": "parcel build --public-url=${PUBLIC_URL:-/} html/*.html",
 		"predeploy": "PUBLIC_URL=/trello-integrations yarn build",
 		"deploy": "gh-pages -d dist"
 	},

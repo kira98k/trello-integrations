@@ -1,5 +1,7 @@
 import { create_request, get_access_token, get_books } from "./goodreads";
 
+const GRAY_ICON = 'https://cdn.hyperdev.com/us-east-1%3A3d31b21c-01a0-4da2-8827-4bc6e88b7618%2Ficon-gray.svg';
+
 export function authorization_status(trello) {
 	/*
 	Read access token from trello saved data. Return true if present.
@@ -12,7 +14,7 @@ export function authorization_status(trello) {
 				return { authorized: false };
 			} else {
 				console.log(`Access Token Found : ${access_token}`)
-				return { authorized: true };
+				return { authorized: true, access_token: access_token };
 			}
 		});
 }
@@ -20,47 +22,31 @@ export function authorization_status(trello) {
 
 export function show_authorization(trello) {
 	/*
-	The authorization page sends a message with `data=true` when authorization succeeds.
-	If authorization succeeded then try to get the saved request token.
-	Get the access_token from server and save the access_token.
-	*/
-	window.addEventListener("message", event => {
-		if (event.origin === window.location.origin && event.data === true) {
-			event.stopImmediatePropagation();
-			console.log("Authorization Successful.");
-			trello.get("member", "private", "request_token", -1)
-				.then(request_token => {
-					console.log(`Request Token Found : ${request_token}`);
-					return get_access_token(request_token);
-				})
-				.then(access_token => {
-					return trello.set("member", "private", "access_token", access_token);
-				})
-		}
-	})
-	/*
 	Get a request_token from server and save it.
 	Open the authorization page in a pop-up window.
 	*/
 	create_request()
 		.then(({ auth_url, request_token }) => {
+			console.log(`Created Request Token : ${request_token}`);
 			return trello.set("member", "private", "request_token", request_token)
 				.then(() => {
 					return { auth_url, request_token };
 				});
 		})
 		.then(({ auth_url, request_token }) => {
-			const goodreads = window.open(`./authorize.html?auth_url=${auth_url}`);
-			if (!goodreads || goodreads.closed || typeof goodreads.closed === 'undefined') {
-				alert("Please enabled pop-ups.");
-			} else {
-				goodreads.focus();
-			}
-			return { auth_url, request_token };
+			console.log(`Opening Authorization Popup : ${auth_url}`)
+			return trello.authorize(auth_url)
+				.then((authorized) => {
+					if(authorized === "1") {
+						console.log("Authorized")
+						return get_access_token(request_token)
+							.then(access_token => trello.set("member", "private", "access_token", access_token));
+					}
+				})
 		});
 }
 
-function get_books_popup(trello) {
+export function get_books_popup(trello) {
 	return trello.get("member", "private", "access_token", -1)
 		.then(access_token => {
 			if (access_token === -1) {
@@ -75,7 +61,10 @@ function get_books_popup(trello) {
 			books.forEach(book => {
 				items.push({
 					text: book.title,
-					callback: (trello) => trello.alert({ message: "You clicked : " + book.title })
+					callback: (trello) => {
+						console.log(`Saving book "${book.title}" on card titled : ${trello.card}`)
+						trello.set("card", "private", "book", book);
+					}
 				})
 			})
 			console.log("Received Items : " + JSON.stringify(items));
@@ -93,4 +82,23 @@ export function card_buttons() {
 			})
 		}
 	}];
+}
+
+export function card_back_section(trello) {
+	return trello.get("card", "private", "book", -1)
+		.then(book => {
+			if (book === -1) {
+				return [];
+			}
+			return [{
+				id: "Book Description",
+				title: "Book Description",
+				icon: GRAY_ICON,
+				content: {
+					type: "iframe",
+					url: trello.signUrl("./description.html", { description: book.description }),
+					height: 500
+				}
+			}];
+		})
 }
