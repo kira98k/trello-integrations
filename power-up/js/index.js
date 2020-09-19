@@ -1,4 +1,9 @@
-import { authorization_status, show_authorization, card_buttons, attachment_sections } from "./trello";
+import {
+	authorization_status,
+	show_authorization,
+	card_buttons,
+	attachment_sections
+} from "./trello/index";
 
 TrelloPowerUp.initialize({
 	"attachment-sections": attachment_sections,
