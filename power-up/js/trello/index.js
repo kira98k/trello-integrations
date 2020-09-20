@@ -1,4 +1,4 @@
 export * from "./authorization";
-export * from "./attachments";
+export * from "./card-back-section";
 export * from "./card-buttons";
 export * from "./card-detail-badges";

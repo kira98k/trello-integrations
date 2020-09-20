@@ -1,7 +1,7 @@
 const trello = window.TrelloPowerUp.iframe();
 
-window.onload = () => {
-	trello.render(() => {
-		document.body.innerHTML = trello.arg("description");
+trello.render(() => {
+	return trello.get("card", "private", "book", -1).then(book => {
+		document.body.innerHTML = book.description;
 	});
-}
+});

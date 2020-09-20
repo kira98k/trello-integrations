@@ -15,10 +15,7 @@ function get_books_popup(trello) {
 			books.forEach(book => {
 				items.push({
 					text: book.title,
-					callback: (trello) => {
-						return trello.set("card", "private", "book", book)
-							.then(() => trello.attach({ url: "https://www.goodreads.com/" }))
-					}
+					callback: (trello) => trello.set("card", "private", "book", book)
 				})
 			})
 			console.log("Received Items : " + JSON.stringify(items));
