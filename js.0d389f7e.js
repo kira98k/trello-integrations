@@ -61,7 +61,7 @@ module.exports=require("./lib/axios");
 },{"../goodreads":"xXY2"}],"mvNz":[function(require,module,exports) {
 "use strict";Object.defineProperty(exports,"__esModule",{value:!0}),exports.card_back_section=e;var t="https://cdn.hyperdev.com/us-east-1%3A3d31b21c-01a0-4da2-8827-4bc6e88b7618%2Ficon-gray.svg";function e(e,r){return e.get("card","private","book",-1).then(function(r){return{title:"Book Description - ".concat(r.title),icon:t,content:{type:"iframe",url:e.signUrl("./description.html"),height:250}}})}
 },{}],"XGlT":[function(require,module,exports) {
-"use strict";Object.defineProperty(exports,"__esModule",{value:!0}),exports.card_buttons=r;var e=require("../goodreads");function t(t){return t.get("member","private","access_token",-1).then(function(r){return-1===r?t.alert({message:"User not authorized yet."}).then(function(){return[]}):(0,e.get_books)(r)}).then(function(e){var t=[];return e.forEach(function(e){t.push({text:e.title,callback:function(t){return t.set("card","private","book",e)}})}),console.log("Received Items : "+JSON.stringify(t)),t})}function r(){return[{text:"Your Books",callback:function(e){return e.popup({title:"Your Books",items:t})}}]}
+"use strict";Object.defineProperty(exports,"__esModule",{value:!0}),exports.card_buttons=r;var t=require("../goodreads");function e(e){return e.get("member","private","access_token",-1).then(function(o){return-1===o?e.alert({message:"User not authorized yet."}).then(function(){return[]}):(0,t.get_books)(o)}).then(function(t){var e=[];return t.forEach(function(t){e.push({text:t.title,callback:function(e){return e.set("card","private","book",t)}})}),console.log("Received Items : "+JSON.stringify(e)),e})}function o(t,e){return console.log(JSON.stringify(e)),[]}function r(){return[{text:"Your Books",callback:function(t){return t.popup({title:"Your Books",items:e})}},{text:"Search Books",callback:function(t){return t.popup({title:"Search Books",items:o})}}]}
 },{"../goodreads":"xXY2"}],"ivoQ":[function(require,module,exports) {
 "use strict";function e(e){return e.get("card","private","book",-1).then(function(e){return-1===e?[]:e.shelves.map(function(e){return{title:"Shelves",text:e}})})}Object.defineProperty(exports,"__esModule",{value:!0}),exports.card_detail_badges=e;
 },{}],"Ni5T":[function(require,module,exports) {
@@ -69,4 +69,4 @@ module.exports=require("./lib/axios");
 },{"./authorization":"dFr4","./card-back-section":"mvNz","./card-buttons":"XGlT","./card-detail-badges":"ivoQ"}],"Y5Mt":[function(require,module,exports) {
 "use strict";var a=require("./trello/index");TrelloPowerUp.initialize({"authorization-status":a.authorization_status,"card-back-section":a.card_back_section,"card-buttons":a.card_buttons,"card-detail-badges":a.card_detail_badges,"show-authorization":a.show_authorization});
 },{"./trello/index":"Ni5T"}]},{},["Y5Mt"], null)
-//# sourceMappingURL=/trello-integrations/js.c3bfed2f.js.map
+//# sourceMappingURL=/trello-integrations/js.0d389f7e.js.map
