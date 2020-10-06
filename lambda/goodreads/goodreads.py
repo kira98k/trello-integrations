@@ -48,3 +48,9 @@ def search_books(access_token, query):
 	session = _create_session(access_token)
 	response = session.get(SEARCH_BOOKS_URL, params={"q": query})
 	return parser.parse_search_books(response.content)
+
+
+def add_to_shelf(access_token, book_id, shelf="to-read"):
+	session = _create_session(access_token)
+	response = session.post(ADD_TO_SHELF_URL, data={"name": shelf, "book_id": book_id})
+	return 200 <= response.status_code < 300
