@@ -23,10 +23,18 @@ export function get_books(access_token) {
 	return postData({ "action": "get_books", "access_token": access_token });
 }
 
+export function get_book(access_token, book_id) {
+	return postData({ "action": "get_book", "access_token": access_token, "book_id": book_id });
+}
+
 export function search_books(access_token, query) {
 	return postData({ "action": "search_books", "access_token": access_token, "query": query });
 }
 
 export function add_to_shelf(access_token, book_id, shelf = "to-read") {
 	return postData({ "action": "add_to_shelf", "access_token": access_token, "book_id": book_id, "shelf": shelf })
+}
+
+export function get_shelves(access_token) {
+	return postData({ "action": "get_shelves", "access_token": access_token })
 }

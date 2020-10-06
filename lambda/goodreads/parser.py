@@ -40,3 +40,11 @@ def parse_search_books(content):
 		}
 		books.append(book)
 	return books
+
+
+def parse_shelves(content):
+	root = etree.fromstring(content)
+	shelves = []
+	for item in root.xpath("//user_shelf"):
+		shelves.append(item.xpath("name/text()")[0])
+	return shelves

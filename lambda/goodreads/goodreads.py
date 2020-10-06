@@ -44,6 +44,13 @@ def get_books(access_token):
 	return parser.parse_user_books(response.content)
 
 
+def get_book(access_token, book_id):
+	books = get_books(access_token)
+	for book in books:
+		if book["book_id"] == book_id:
+			return book
+
+
 def search_books(access_token, query):
 	session = _create_session(access_token)
 	response = session.get(SEARCH_BOOKS_URL, params={"q": query})
@@ -54,3 +61,10 @@ def add_to_shelf(access_token, book_id, shelf="to-read"):
 	session = _create_session(access_token)
 	response = session.post(ADD_TO_SHELF_URL, data={"name": shelf, "book_id": book_id})
 	return 200 <= response.status_code < 300
+
+
+def get_shelves(access_token):
+	session = _create_session(access_token)
+	user_id = get_user_id(access_token)
+	response = session.get(GET_SHELVES_URL, params={"user_id": user_id})
+	return parser.parse_shelves(response.content)
