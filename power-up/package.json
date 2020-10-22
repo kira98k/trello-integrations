@@ -7,7 +7,7 @@
 	"author": "Kira98k<kira98k.d.law@gmail.com>",
 	"license": "MIT",
 	"scripts": {
-		"prebuild": "rm -rf dist",
+		"prebuild": "rm -rf dist && yarn install",
 		"build": "parcel build --public-url=${PUBLIC_URL:-/} html/*.html",
 		"predeploy": "PUBLIC_URL=/trello-integrations yarn build",
 		"deploy": "gh-pages -d dist"
