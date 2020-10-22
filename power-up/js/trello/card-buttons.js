@@ -88,6 +88,10 @@ export function card_buttons(trello) {
 						search: { count: 10 }
 					})
 				})
+				buttons.push({
+					text: "Remove Book",
+					callback: trello => trello.remove("card", "private", "book")
+				})
 			}
 			return buttons;
 		})
